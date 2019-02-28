@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Learning Game (Prototype)</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            /*eslint-env jquery */
+            /*globals io */
+            /*eslint-disable no-unused-vars */
+            var socket = io();
+            
+            socket.on("connMessage", function() {
+               $("#msg").text("Connected!");
+               console.log("Connected as " + socket.id); // debug line, plz ignore
+               $("#start").prop("disabled", false);
+               $("#start").show();
+            });
+            
+            socket.on("loadedGame", function(){
+                $("#conn").text("Game loaded, starting...");
+            });
+            
+            socket.on("question", function(question) {
+                $("#msg").text(question.text);
+                $("#a1").text(question.answers[0].text);
+                $("#a2").text(question.answers[1].text);
+                $("#a3").text(question.answers[2].text);
+                $("#a4").text(question.answers[3].text);
+            });
+            
+            function onStartClick() {
+                $("#msg").text("Waiting for game to start...");
+                $("#start").hide();
+                disableButtons();
+                socket.emit("startGame", "0");
+            };
+
+            
+            function disableButtons(){
+                $("button").prop("disabled", false);
+            }
+            
+            function enableButtons() {
+                $("button").prop("disabled", true);
+            }
+        </script>
+        <p id="msg">Connecting to socket...</p>
+        <button id="start" onclick="onStartClick()" disabled>Start Game</button>
+        <button id="a1" onclick="onA1Click()" disabled></button>
+        <button id="a2" onclick="onA2Click()" disabled></button>
+        <button id="a3" onclick="onA3Click()" disabled></button>
+        <button id="a4" onclick="onA4Click()" disabled></button>
+    </body>
+</html>

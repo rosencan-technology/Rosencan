@@ -1,0 +1,29 @@
+{
+    "id": 0,
+    "author": 0,
+    "questions": [
+        {
+            "id": 0,
+            "text": "When was the last Presidential election?",
+            "answers": [
+                {
+                    "id": 0,
+                    "text": "2016"
+                },
+                {
+                    "id": 1,
+                    "text": "2002"
+                },
+                {
+                    "id": 2,
+                    "text": "2018"
+                },
+                {
+                    "id": 3,
+                    "text": "None of the above"
+                }
+            ],
+            "correct": 0
+        }
+    ]
+}
