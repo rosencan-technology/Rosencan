@@ -24,12 +24,22 @@ io.on("connection", function(socket) {
         console.log("Starting game...");
         var game = loadGame(name);
         console.log(game);
+        // sleep(1000);
         socket.emit("loadedGame");
-        console.log(game.questions[q]);
+        socket.emit("question", game.questions[q]);
         q += 1;
     });
 });
 
 function loadGame(name) {
     return JSON.parse(fs.readFileSync(__dirname + `/games/${name}.json`));
+}
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
 }

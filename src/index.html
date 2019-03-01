@@ -10,48 +10,83 @@
             /*eslint-env jquery */
             /*globals io */
             /*eslint-disable no-unused-vars */
+            hideAnswerButtons();
             var socket = io();
             
             socket.on("connMessage", function() {
                $("#msg").text("Connected!");
                console.log("Connected as " + socket.id); // debug line, plz ignore
-               $("#start").prop("disabled", false);
+               hideAnswerButtons();
+               enableButtons();
                $("#start").show();
             });
             
-            socket.on("loadedGame", function(){
-                $("#conn").text("Game loaded, starting...");
+            function onStartClick() {
+                // $("#msg").text("Waiting for game to start...");
+                $("#start").hide();
+                disableButtons();
+                socket.emit("startGame", "0");
+                console.log("Waiting for loaded response...");
+            };
+
+            socket.on("loadedGame", function() {
+                $("#msg").text("Game loaded, starting...");
             });
-            
+
             socket.on("question", function(question) {
                 $("#msg").text(question.text);
                 $("#a1").text(question.answers[0].text);
                 $("#a2").text(question.answers[1].text);
                 $("#a3").text(question.answers[2].text);
                 $("#a4").text(question.answers[3].text);
+                enableButtons();
+                showAnswerButtons();
             });
-            
-            function onStartClick() {
-                $("#msg").text("Waiting for game to start...");
-                $("#start").hide();
-                disableButtons();
-                socket.emit("startGame", "0");
-            };
 
+            function onA1Click() {
+
+            }
+            
+            function onA2Click() {
+
+            }
+
+            function onA3Click() {
+
+            }
+
+            function onA4Click() {
+                
+            }
             
             function disableButtons(){
-                $("button").prop("disabled", false);
+                $("button").prop("disabled", true);
             }
             
             function enableButtons() {
-                $("button").prop("disabled", true);
+                $("button").prop("disabled", false);
+            }
+
+            function showAnswerButtons() {
+                $("#a1").show();
+                $("#a2").show();
+                $("#a3").show();
+                $("#a4").show();
+            }
+
+            function hideAnswerButtons() {
+                $("#a1").hide();
+                $("#a2").hide();
+                $("#a3").hide();
+                $("#a4").hide();
             }
         </script>
         <p id="msg">Connecting to socket...</p>
         <button id="start" onclick="onStartClick()" disabled>Start Game</button>
-        <button id="a1" onclick="onA1Click()" disabled></button>
-        <button id="a2" onclick="onA2Click()" disabled></button>
-        <button id="a3" onclick="onA3Click()" disabled></button>
-        <button id="a4" onclick="onA4Click()" disabled></button>
+        <button id="a1" class="a" onclick="onA1Click()" disabled></button>
+        <button id="a2" class="a" onclick="onA2Click()" disabled></button>
+        <br/>
+        <button id="a3" class="a" onclick="onA3Click()" disabled></button>
+        <button id="a4" class="a" onclick="onA4Click()" disabled></button>
     </body>
 </html>
